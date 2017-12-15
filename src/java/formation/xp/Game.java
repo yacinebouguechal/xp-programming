@@ -5,6 +5,9 @@
 package formation.xp;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.smartcardio.Card;
+
 import java.util.LinkedList;
 import java.util.Collections;
 /**
@@ -48,10 +51,17 @@ public class Game {
       }
   }
   
-  private int lastbet;
+//public static int lastBet;
+  
+  private int lastBet;
 
   public int getLastbet() {
-      return lastbet;
+      return lastBet;
   }
+
+public void updateLastBet(int amount) {
+	lastBet=amount;	
+}
+
     
 }
