@@ -1,5 +1,7 @@
 package formation.xp;
 
+import java.util.Iterator;
+
 import org.junit.Test;
 
 import junit.framework.TestCase;
@@ -15,6 +17,33 @@ public class GeneralTest extends TestCase {
         }
 	
 	
+	@Test
+	public void test_remainingStake() {
+		Player toto = new Player(100);
+		toto.bet(30);
+        assertEquals(toto.getRemainingStake(),70);
+        }
+	
+	
+	@Test
+	public void test_gameSum() {
+		Game game = new Game(5);
+		for (Iterator<Player> it = game.getplayers().iterator(); it.hasNext();){
+			 ((Player) it.next()).bet(10);
+		}
+		assertEquals(game.seeGameSum(),50);
+        }
+	
+	
+	@Test
+	public void test_kickPlayer() {
+		Game game = new Game(3);
+		Iterator<Player> it = game.getplayers().iterator(); 
+		it.next().setRemainingStake(0);
+		game.kickPlayer();
+		
+		assertEquals(game.getplayers().size(),2);
+     }
 	
 	
 	@Test
@@ -23,6 +52,9 @@ public class GeneralTest extends TestCase {
                 assertEquals(toto.getName(),"toto");
         }
         
+	
+	
+	
     @Test
 	public void test_card(){
                 Card ace_spades = new Card(Card.Suit.SPADES,1);

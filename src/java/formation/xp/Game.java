@@ -8,6 +8,7 @@ import java.util.List;
 
 import java.util.LinkedList;
 import java.util.Collections;
+import java.util.Iterator;
 /**
  *
  * @author bouguechal
@@ -15,7 +16,7 @@ import java.util.Collections;
 public class Game {
   private LinkedList<Card> m_deck;
   private List<Player> m_players;
-
+  private int gameSum;
     public List<Player> getplayers() {
         return m_players;
     }
@@ -34,7 +35,7 @@ public class Game {
       
       m_players = new ArrayList<Player>();
       for(int i=0; i< player_nb; i++){
-          m_players.add(new Player("Player" + i));
+          m_players.add(new Player("Player" + i, (int) (10+Math.random()*40)));
       }
       
                
@@ -57,9 +58,37 @@ public class Game {
       return lastBet;
   }
 
+  public List<Player> getPlayers() {
+      return this.m_players;
+  }
+  
 public void updateLastBet(int amount) {
 	lastBet=amount;	
 }
 
-    
+public void kickPlayer(){
+	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
+		 if (((Player) it.next()).getRemainingStake()==0){
+			 m_players.remove(it.next());
+		 }	 
+	}
 }
+
+
+public int seeGameSum(){
+	gameSum=0;
+	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
+		 gameSum += ((Player) it.next()).getPlayerLastBet();
+		// System.out.println(((Player) it.next()).getPlayerLastBet());
+	}
+	System.out.println(gameSum);
+	return this.gameSum;
+}
+
+public int getGameSum(){
+	return this.gameSum;
+}
+}
+    
+
+
