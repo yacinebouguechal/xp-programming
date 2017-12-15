@@ -92,8 +92,17 @@ public class Player {
         this.initialStake=initialStake;
     }
     
+    public Player(String name, int initialStake){
+    	this. m_name=name;
+        this.initialStake=initialStake;
+    }
+    
     public int getInitialStake(){
         return initialStake;
+    }
+    
+    public void setInitialStake(int initAmount){
+        this.initialStake =initAmount;
     }
     
     public int getPlayerLastBet(){
@@ -105,6 +114,15 @@ public class Player {
         return remainingStake;
     }
     
+    public int checkRemainingStake(){
+        System.out.println(remainingStake);
+        return remainingStake;
+    }
+    
+    
+    public void setRemainingStake(int stake){
+    	remainingStake=stake;
+    }
     
     
     

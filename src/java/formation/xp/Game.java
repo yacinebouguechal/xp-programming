@@ -8,6 +8,7 @@ import java.util.List;
 
 import java.util.LinkedList;
 import java.util.Collections;
+import java.util.Iterator;
 /**
  *
  * @author bouguechal
@@ -15,7 +16,7 @@ import java.util.Collections;
 public class Game {
   private LinkedList<Card> m_deck;
   private List<Player> m_players;
-
+  private int gameSum;
     public List<Player> getplayers() {
         return m_players;
     }
@@ -34,7 +35,7 @@ public class Game {
       
       m_players = new ArrayList<Player>();
       for(int i=0; i< player_nb; i++){
-          m_players.add(new Player("Player" + i));
+          m_players.add(new Player("Player" + i, (int) (10+Math.random()*40)));
       }
       
                
@@ -57,13 +58,17 @@ public class Game {
       return lastBet;
   }
 
+  public List<Player> getPlayers() {
+      return this.m_players;
+  }
+  
 public void updateLastBet(int amount) {
 	lastBet=amount;	
 }
     
     
 
-    private int turn(int index_first_better, int last_bet)
+private int turn(int index_first_better, int last_bet)
     {
         System.out.println("Taille m_player: "+ m_players.size());
         System.out.println("index : "+ index_first_better);
@@ -86,59 +91,85 @@ public void updateLastBet(int amount) {
         return last_bet;
     }
     
-    private void distrubute_gains()
-    {
+private void distrubute_gains()
+{
         
-    }
-    
-    
-    public void run() {
-        
-        int blind_amount = 10;
-        for(int k=0; k<2; k++)
-        {
-            m_deck = new LinkedList<Card>();
-      for(Card.Suit suit : Card.Suit.values())
-          for(int value = 1; value<14; value++)
-              m_deck.add(new Card(suit, value));
-            
-            Player little_blind = m_players.get(0);
-            Player big_blind = m_players.get(1);
-            
-            
-            
-            List<Card> revealed = new ArrayList<Card>();
-            
-            little_blind.bet(blind_amount);
-            big_blind.bet(2*blind_amount);
-            
-            int last_bet=2*blind_amount;
-            
-            m_deck.pop();
-            giveCards();
-            
-            last_bet = turn(2, last_bet);
-            
-            m_deck.pop();
-            revealed.add(m_deck.pop());
-            revealed.add(m_deck.pop());
-            revealed.add(m_deck.pop());
-
-            last_bet = turn(0, last_bet);
-            
-            m_deck.pop();
-            revealed.add(m_deck.pop());
-            last_bet = turn(0, last_bet);
-            
-            m_deck.pop();
-            revealed.add(m_deck.pop());
-            last_bet = turn(0,last_bet);
-            
-            distrubute_gains();
-
-        }
-        
-        
-    }
-  
 }
+    
+    
+public void run() {
+
+    int blind_amount = 10;
+    for(int k=0; k<2; k++)
+    {
+        m_deck = new LinkedList<Card>();
+  for(Card.Suit suit : Card.Suit.values())
+      for(int value = 1; value<14; value++)
+          m_deck.add(new Card(suit, value));
+
+        Player little_blind = m_players.get(0);
+        Player big_blind = m_players.get(1);
+
+
+
+        List<Card> revealed = new ArrayList<Card>();
+
+        little_blind.bet(blind_amount);
+        big_blind.bet(2*blind_amount);
+
+        int last_bet=2*blind_amount;
+
+        m_deck.pop();
+        giveCards();
+
+        last_bet = turn(2, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        revealed.add(m_deck.pop());
+        revealed.add(m_deck.pop());
+
+        last_bet = turn(0, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        last_bet = turn(0, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        last_bet = turn(0,last_bet);
+
+        distrubute_gains();
+
+    }
+
+
+}
+  
+
+public void kickPlayer(){
+	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
+		 if (((Player) it.next()).getRemainingStake()==0){
+			 m_players.remove(it.next());
+		 }	 
+	}
+}
+
+
+public int seeGameSum(){
+	gameSum=0;
+	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
+		 gameSum += ((Player) it.next()).getPlayerLastBet();
+		// System.out.println(((Player) it.next()).getPlayerLastBet());
+	}
+	System.out.println(gameSum);
+	return this.gameSum;
+}
+
+public int getGameSum(){
+	return this.gameSum;
+}
+}
+    
+
+
