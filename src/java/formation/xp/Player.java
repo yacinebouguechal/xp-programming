@@ -4,7 +4,7 @@
  */
 package formation.xp;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 
 /**
  *
@@ -122,6 +122,35 @@ public class Player {
         System.out.println(toString());
     }
     
+    public void makeTurn(int last_bet)
+    {
+        printCards();
+        Scanner sc = new Scanner(System.in);
+        int i=-1;
+        while(i<0 || i>4)
+        {
+            System.out.println("1: fold");
+            System.out.println("2: check");
+            System.out.println("3: raise");
+            System.out.println("4: all-in");
+            i=sc.nextInt();
+        }
+        switch(i)
+        {
+            case 1:
+                fold();
+                break;
+            case 2:
+                check();
+                break;
+            case 3:
+                //raise();
+                break;
+            case 4:
+                //all-in();
+                break;
+        }
+    }
     
     
 }

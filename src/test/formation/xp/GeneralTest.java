@@ -1,5 +1,6 @@
 package formation.xp;
 
+import java.util.ArrayList;
 import org.junit.Test;
 
 import junit.framework.TestCase;
