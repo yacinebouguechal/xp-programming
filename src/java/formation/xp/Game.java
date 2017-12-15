@@ -65,6 +65,87 @@ public class Game {
 public void updateLastBet(int amount) {
 	lastBet=amount;	
 }
+    
+    
+
+private int turn(int index_first_better, int last_bet)
+    {
+        System.out.println("Taille m_player: "+ m_players.size());
+        System.out.println("index : "+ index_first_better);
+        m_players.get(index_first_better).makeTurn(last_bet);
+        int index_lastbetter = index_first_better;
+        
+        
+        
+        for(int i = (index_first_better+1)%m_players.size(); i != index_lastbetter; i=(i+1)%m_players.size())
+        {
+            
+            System.out.println("maketurn");
+            m_players.get(i).makeTurn(last_bet);
+             if(m_players.get(i).getPlayerLastBet()>last_bet)
+             {
+                 index_lastbetter=i;
+                 last_bet = m_players.get(i).getPlayerLastBet();
+             }      
+        }
+        return last_bet;
+    }
+    
+private void distrubute_gains()
+{
+        
+}
+    
+    
+public void run() {
+
+    int blind_amount = 10;
+    for(int k=0; k<2; k++)
+    {
+        m_deck = new LinkedList<Card>();
+  for(Card.Suit suit : Card.Suit.values())
+      for(int value = 1; value<14; value++)
+          m_deck.add(new Card(suit, value));
+
+        Player little_blind = m_players.get(0);
+        Player big_blind = m_players.get(1);
+
+
+
+        List<Card> revealed = new ArrayList<Card>();
+
+        little_blind.bet(blind_amount);
+        big_blind.bet(2*blind_amount);
+
+        int last_bet=2*blind_amount;
+
+        m_deck.pop();
+        giveCards();
+
+        last_bet = turn(2, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        revealed.add(m_deck.pop());
+        revealed.add(m_deck.pop());
+
+        last_bet = turn(0, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        last_bet = turn(0, last_bet);
+
+        m_deck.pop();
+        revealed.add(m_deck.pop());
+        last_bet = turn(0,last_bet);
+
+        distrubute_gains();
+
+    }
+
+
+}
+  
 
 public void kickPlayer(){
 	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){

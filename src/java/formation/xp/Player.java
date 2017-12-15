@@ -4,7 +4,7 @@
  */
 package formation.xp;
 import java.util.ArrayList;
-
+import java.util.Scanner;
 
 /**
  * Manage Players' informations, bets, actions, stakes
@@ -186,7 +186,55 @@ public class Player {
         return remainingStake;
     }
     
- 
+
+
+    
+    
+    
+public String toString(){
+    String my_string = "Player: "+mName+"\nHand:\n";
+    for(Card card : mHand){
+        my_string+="*";
+        my_string+=card.toString();
+        my_string+="\n";
+    }
+    return my_string;
+}
+    
+public void printCards(){
+    System.out.println(toString());
+}
+    
+public void makeTurn(int last_bet)
+{
+    printCards();
+    Scanner sc = new Scanner(System.in);
+    int i=-1;
+    while(i<0 || i>4)
+    {
+        System.out.println("1: fold");
+        System.out.println("2: check");
+        System.out.println("3: raise");
+        System.out.println("4: all-in");
+        i=sc.nextInt();
+    }
+    switch(i)
+    {
+        case 1:
+            fold();
+            break;
+        case 2:
+            check();
+            break;
+        case 3:
+            //raise();
+            break;
+        case 4:
+            //all-in();
+            break;
+    }
+}
+        
 }
 
 
