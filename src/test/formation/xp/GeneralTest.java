@@ -15,6 +15,8 @@ public class GeneralTest extends TestCase {
         }
 	
 	
+	
+	
 	@Test
 	public void test_player() {
 		Player toto = new Player("toto");

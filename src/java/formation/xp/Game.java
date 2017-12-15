@@ -6,8 +6,6 @@ package formation.xp;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.smartcardio.Card;
-
 import java.util.LinkedList;
 import java.util.Collections;
 /**

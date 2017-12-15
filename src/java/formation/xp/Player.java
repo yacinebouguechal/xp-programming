@@ -5,8 +5,6 @@
 package formation.xp;
 import java.util.ArrayList;
 
-import javax.smartcardio.Card;
-
 
 /**
  *
