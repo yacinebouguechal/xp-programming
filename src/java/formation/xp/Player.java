@@ -108,7 +108,19 @@ public class Player {
     
     
     
+    public String toString(){
+        String my_string = "Player: "+m_name+"\nHand:\n";
+        for(Card card : m_hand){
+            my_string+="*";
+            my_string+=card.toString();
+            my_string+="\n";
+        }
+        return my_string;
+    }
     
+    public void printCards(){
+        System.out.println(toString());
+    }
     
     
     

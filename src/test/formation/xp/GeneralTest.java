@@ -21,6 +21,12 @@ public class GeneralTest extends TestCase {
 	public void test_player() {
 		Player toto = new Player("toto");
                 assertEquals(toto.getName(),"toto");
+                ArrayList<Card> my_hand = new ArrayList<Card>();
+                my_hand.add(new Card(Card.Suit.SPADES,1));
+                my_hand.add(new Card(Card.Suit.SPADES,2));
+                toto.setHand(my_hand);
+                System.out.print(toto.toString());
+                assertEquals(toto.toString(),"Player: toto\nHand:\n*Ace of Spades\n*2 of Spades\n");
         }
         
     @Test
