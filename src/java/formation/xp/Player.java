@@ -7,129 +7,186 @@ import java.util.ArrayList;
 
 
 /**
- *
- * @author bouguechal
+ * Manage Players' informations, bets, actions, stakes
+ * 
  */
-
 
 public class Player {
 	
-	private String m_name;
-	private ArrayList<Card> m_hand;
-	int initialStake;
-	int remainingStake;
-	int playerLastBet;
-	ArrayList<Card> playerCards = new ArrayList<Card>();
+	private String mName; //player's name
+	private ArrayList<Card> mHand; //player's cards
+	private int initialStake; //initial stake of the player
+	private int remainingStake; //player's remaining stake
+	private int playerLastBet; //player's last bet
 	
-	/*
-	 * BET
+	
+
+	/**
+	 *
+	 * Constructor with name only
 	 */
-	public void bet(int amount) {
-		playerLastBet=amount;
-		remainingStake=initialStake-amount;
-	}
-	
-	/*
-	 * playerLastBet getter
+   public Player(String name){
+       mName=name;
+   }
+   
+	/**
+	 *
+	 * Constructor with initial Stake only
+	 */
+   public Player(int initialStake){
+       this.initialStake=initialStake;
+   }
+   
+	/**
+	 *
+	 * Constructor with name and initial Stake
+	 */
+   public Player(String name, int initialStake){
+   	this. mName=name;
+       this.initialStake=initialStake;
+   }
+   
+   
+	/**
+	 *
+	 * GETTER for initialStake
+	 */
+   public int getInitialStake(){
+       return initialStake;
+   }
+   
+   /**
+	 *
+	 * GETTER for playerLastBet
+	 */
+   public int getPlayerLastBet(){
+       return playerLastBet;
+   }
+   
+   /**
+	 *
+	 * GETTER for remainingStake
+	 */
+   public int getRemainingStake(){
+       return remainingStake;
+   }
+   
+   /**
+	 * GETTER for playerLastBet
+	 * 
 	 */
 	public int getPlayerLastBest(){
 		return playerLastBet;
 	}
 	
-	/*
-	 * Bet the minimum to continue playing (last Bet of the game)
+	/**
+	 *
+	 * GETTER for mHand
+	 */
+   public ArrayList<Card> getHand() {
+       return mHand;
+   }
+   
+   
+	/**
+	 *
+	 * GETTER for mName
+	 */
+   public String getName() {
+       return mName;
+   }
+   
+	
+   /**
+	 *
+	 *SETTER for remainingStake
+	 */
+    public void setRemainingStake(int stake){
+    	remainingStake=stake;
+    }   
+    
+    
+    /**
+	 *
+	 * SETTER for mHand
+	 */
+   public void setHand(ArrayList<Card> mHand) {
+       this.mHand = mHand;
+   }
+
+   
+
+	
+   /**
+	 *
+	 * SETTER for initialStake
+	 */
+   public void setInitialStake(int initAmount){
+       this.initialStake =initAmount;
+   }
+  
+   
+	/**
+	 *
+	 * The player bets the amount specified
+	 */
+	public void bet(int amount) {
+		playerLastBet=amount; // update the player's last bet
+		remainingStake=initialStake-amount; //update the player's remaing stake
+	}
+	
+	
+	/**
+	 *
+	 * The player bets the minimum amount possible
 	 */
 	public void callBet(int lastBet) {
 		this.bet(lastBet);
 	}
 	
-	/*
-	 *  Bet all you got
+	/**
+	 *
+	 * The player bets all his stake
 	 */
 	public void allBet(){
 		this.bet(initialStake);
 	}
 	
-	
-
-	/*
-	 * Raise 
+	/**
+	 *
+	 * The player raises the bet 
 	 */
 	public void raiseBet (int raise, int LastBet){
 		this.bet(LastBet + raise);
 	}
 	
-	/*
-	 * fold
+	/**
+	 *
+	 * The player decides to fold
 	 */
 	public void fold(){
 		this.bet(playerLastBet);
 	}
 	
+	/**
+	 *
+	 * The player checks his last bet
+	 */
     public void check (){
     	System.out.println(playerLastBet);
     }
     
-
-
-    public void setHand(ArrayList<Card> m_hand) {
-        this.m_hand = m_hand;
-    }
-
-    public ArrayList<Card> getHand() {
-        return m_hand;
-    }
-            
-    public String getName() {
-        return m_name;
-    }
     
-    public Player(String name){
-        m_name=name;
-    }
-    
-    public Player(int initialStake){
-        this.initialStake=initialStake;
-    }
-    
-    public Player(String name, int initialStake){
-    	this. m_name=name;
-        this.initialStake=initialStake;
-    }
-    
-    public int getInitialStake(){
-        return initialStake;
-    }
-    
-    public void setInitialStake(int initAmount){
-        this.initialStake =initAmount;
-    }
-    
-    public int getPlayerLastBet(){
-        return playerLastBet;
-    }
-    
-    
-    public int getRemainingStake(){
-        return remainingStake;
-    }
-    
+    /**
+	 *
+	 * Check the remaining stake
+	 */
     public int checkRemainingStake(){
         System.out.println(remainingStake);
         return remainingStake;
     }
     
-    
-    public void setRemainingStake(int stake){
-    	remainingStake=stake;
-    }
-    
-    
-    
-    
-    
-    
-    
+ 
 }
 
 

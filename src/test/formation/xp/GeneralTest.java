@@ -6,10 +6,19 @@ import org.junit.Test;
 
 import junit.framework.TestCase;
 
+/**
+ * Tests for the different user stories
+ * 
+ */
+
 public class GeneralTest extends TestCase {
 	
 	@Test
-	public void test_bet() {
+	/**
+	 * Test the bet method
+	 * 
+	 */
+	public void testBet() {
 		Player toto = new Player(100);
 		toto.bet(30);
         assertEquals(toto.getPlayerLastBet(),30);
@@ -18,17 +27,25 @@ public class GeneralTest extends TestCase {
 	
 	
 	@Test
-	public void test_remainingStake() {
+	/**
+	 * Test the bet method that checks the player's remaing stake
+	 * 
+	 */
+	public void testRemainingStake() {
 		Player toto = new Player(100);
 		toto.bet(30);
-        assertEquals(toto.getRemainingStake(),70);
+        assertEquals(toto.checkRemainingStake(),70);
         }
 	
 	
 	@Test
-	public void test_gameSum() {
+	/**
+	 * Test the bet method that checks the player's remaing stake
+	 * 
+	 */
+	public void testGameSum() {
 		Game game = new Game(5);
-		for (Iterator<Player> it = game.getplayers().iterator(); it.hasNext();){
+		for (Iterator<Player> it = game.getPlayers().iterator(); it.hasNext();){
 			 ((Player) it.next()).bet(10);
 		}
 		assertEquals(game.seeGameSum(),50);
@@ -36,7 +53,7 @@ public class GeneralTest extends TestCase {
 	
 	
 	@Test
-	public void test_kickPlayer() {
+	public void testKickPlayer() {
 		Game game = new Game(3);
 		Iterator<Player> it = game.getplayers().iterator(); 
 		it.next().setRemainingStake(0);
