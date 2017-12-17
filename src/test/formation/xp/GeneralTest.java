@@ -18,8 +18,8 @@ public class GeneralTest extends TestCase {
 	 * 
 	 */
 	public void testBet() {
-		Player toto = new Player(100);
-		toto.bet(30);
+        Player toto = new Player(100);
+	toto.bet(30);
         assertEquals(toto.getPlayerLastBet(),30);
         assertEquals(toto.getRemainingStake(),70);
         }
@@ -64,14 +64,14 @@ public class GeneralTest extends TestCase {
 	
 	@Test
 	public void test_player() {
-		Player toto = new Player("toto");
+		Player toto = new Player("toto",1000);
                 assertEquals(toto.getName(),"toto");
                 ArrayList<Card> my_hand = new ArrayList<Card>();
                 my_hand.add(new Card(Card.Suit.SPADES,1));
                 my_hand.add(new Card(Card.Suit.SPADES,2));
                 toto.setHand(my_hand);
                 System.out.print(toto.toString());
-                assertEquals(toto.toString(),"Player: toto\nHand:\n*Ace of Spades\n*2 of Spades\n");
+                assertEquals(toto.toString(),"Player: toto\nInitialStake: 1000\nRemaining Stake: 1000\nHand:\n*Ace of Spades\n*2 of Spades\n");
         }
         
 	

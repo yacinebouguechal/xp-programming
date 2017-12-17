@@ -17,7 +17,9 @@ public class Player {
 	private ArrayList<Card> mHand; //player's cards
 	private int initialStake; //initial stake of the player
 	private int remainingStake; //player's remaining stake
-	private int playerLastBet; //player's last bet
+	private int playerLastBet; //player's last bet (total)
+        private State playerState; //State of player
+        static public enum State {FOLDED,INGAME,ALLIN};
 	
 	
 
@@ -35,6 +37,7 @@ public class Player {
 	 */
    public Player(int initialStake){
        this.initialStake=initialStake;
+       this.remainingStake=initialStake;
    }
    
 	/**
@@ -42,10 +45,17 @@ public class Player {
 	 * Constructor with name and initial Stake
 	 */
    public Player(String name, int initialStake){
-   	this. mName=name;
+       this.mName=name;
        this.initialStake=initialStake;
+       this.remainingStake=initialStake;
+
    }
    
+   
+   public void resetBet(){ //reset bets for a new turn
+       playerLastBet = 0;
+       this.playerState = Player.State.INGAME; //everyone is ingame by default
+   }
    
 	/**
 	 *
@@ -75,9 +85,9 @@ public class Player {
 	 * GETTER for playerLastBet
 	 * 
 	 */
-	public int getPlayerLastBest(){
-		return playerLastBet;
-	}
+    public int getPlayerLastBest(){
+            return playerLastBet;
+    }
 	
 	/**
 	 *
@@ -121,78 +131,88 @@ public class Player {
 	 *
 	 * SETTER for initialStake
 	 */
-   public void setInitialStake(int initAmount){
-       this.initialStake =initAmount;
-   }
-  
-   
-	/**
-	 *
-	 * The player bets the amount specified
-	 */
-	public void bet(int amount) {
-		playerLastBet=amount; // update the player's last bet
-		remainingStake=initialStake-amount; //update the player's remaing stake
-	}
-	
-	
-	/**
-	 *
-	 * The player bets the minimum amount possible
-	 */
-	public void callBet(int lastBet) {
-		this.bet(lastBet);
-	}
-	
-	/**
-	 *
-	 * The player bets all his stake
-	 */
-	public void allBet(){
-		this.bet(initialStake);
-	}
-	
-	/**
-	 *
-	 * The player raises the bet 
-	 */
-	public void raiseBet (int raise, int LastBet){
-		this.bet(LastBet + raise);
-	}
-	
-	/**
-	 *
-	 * The player decides to fold
-	 */
-	public void fold(){
-		this.bet(playerLastBet);
-	}
-	
-	/**
-	 *
-	 * The player checks his last bet
-	 */
-    public void check (){
-    	System.out.println(playerLastBet);
-    }
-    
-    
-    /**
-	 *
-	 * Check the remaining stake
-	 */
-    public int checkRemainingStake(){
-        System.out.println(remainingStake);
-        return remainingStake;
-    }
-    
+public void setInitialStake(int initAmount){
+    this.initialStake =initAmount;
+}
 
 
+/**
+ *
+ * The player bets the amount specified
+ */
+public void bet(int amount) {
+        playerLastBet=amount; // update the player's last bet
+        remainingStake=initialStake-amount; //update the player's remaing stake
+        playerState = Player.State.INGAME;
+}
+
+
+/**
+ *
+ * The player bets the minimum amount possible
+ */
+public void callBet(int lastBet) {
+        this.bet(lastBet);
+}
+
+/**
+ *
+ * The player bets all his stake
+ */
+public void allBet(){
+        this.bet(initialStake);
+        this.playerState= Player.State.ALLIN;
+}
+
+/**
+ *
+ * The player raises the bet 
+ */
+public void raiseBet (int raise){
+        this.bet(this.playerLastBet + raise);
+}
+
+/**
+ *
+ * The player decides to fold
+ */
+public void fold(){
+        System.out.println(this.mName + " has folded with a remaining bet of: " + this.playerLastBet);
+        this.bet(playerLastBet);
+        this.playerState = Player.State.FOLDED;
+}
+
+/**
+ *
+ * The player checks his last bet
+ */
+public void check (){
+    System.out.println(playerLastBet);
+}
+
+
+/**
+ *
+ * Check the remaining stake
+ */
+public int checkRemainingStake(){
+    System.out.println(remainingStake);
+    return remainingStake;
+}
+    
+
+public void raise(){
+    System.out.println("How much do you want to raise?");
+    Scanner sc = new Scanner(System.in);
+    this.raiseBet(sc.nextInt());
+    
+}
     
     
     
 public String toString(){
-    String my_string = "Player: "+mName+"\nHand:\n";
+    String my_string = "Player: "+mName+ "\nInitialStake: "+this.getInitialStake()+
+            "\nRemaining Stake: "+this.getRemainingStake()+"\nHand:\n";
     for(Card card : mHand){
         my_string+="*";
         my_string+=card.toString();
@@ -207,9 +227,19 @@ public void printCards(){
     
 public void makeTurn(int last_bet)
 {
+    
+    System.out.println("=======================================");
     printCards();
     Scanner sc = new Scanner(System.in);
     int i=-1;
+    if(this.playerState==Player.State.ALLIN){
+        System.out.println("Player is allready ALLIN");
+        return;
+    }
+    if(this.playerState==Player.State.FOLDED){
+        System.out.println("Player is allready Folded");
+        return;
+    }
     while(i<0 || i>4)
     {
         System.out.println("1: fold");
@@ -227,12 +257,13 @@ public void makeTurn(int last_bet)
             check();
             break;
         case 3:
-            //raise();
+            raise();
             break;
         case 4:
-            //all-in();
+            allBet();
             break;
     }
+    System.out.println("=======================================");
 }
         
 }

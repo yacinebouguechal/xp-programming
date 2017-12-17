@@ -35,7 +35,7 @@ public class Game {
       
       m_players = new ArrayList<Player>();
       for(int i=0; i< player_nb; i++){
-          m_players.add(new Player("Player" + i, (int) (10+Math.random()*40)));
+          m_players.add(new Player("Player" + i, 1000));
       }
       
                
@@ -102,10 +102,15 @@ public void run() {
     int blind_amount = 10;
     for(int k=0; k<2; k++)
     {
+        for(Player current : this.m_players){
+            current.resetBet(); //we reset the bet of all the player when the turn begins
+        }
         m_deck = new LinkedList<Card>();
-  for(Card.Suit suit : Card.Suit.values())
-      for(int value = 1; value<14; value++)
-          m_deck.add(new Card(suit, value));
+        for(Card.Suit suit : Card.Suit.values())
+            for(int value = 1; value<14; value++)
+                 m_deck.add(new Card(suit, value));
+
+        Collections.shuffle(m_deck);
 
         Player little_blind = m_players.get(0);
         Player big_blind = m_players.get(1);
