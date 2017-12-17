@@ -17,6 +17,8 @@ public class Game {
   private LinkedList<Card> m_deck;
   private List<Player> m_players;
   private int gameSum;
+  private List<Card> mRevealed;
+  
     public List<Player> getplayers() {
         return m_players;
     }
@@ -86,6 +88,7 @@ private int turn(int index_first_better, int last_bet)
              {
                  index_lastbetter=i;
                  last_bet = m_players.get(i).getPlayerLastBet();
+                 System.out.println("Best bet is: " + last_bet);
              }      
         }
         return last_bet;
@@ -95,7 +98,13 @@ private void distrubute_gains()
 {
         
 }
-    
+
+private void revealCard(){
+    System.out.print("+++++++++++++++++++++++++++");
+    System.out.print("Revealing Card:\n");
+    this.mRevealed.add(m_deck.pop());
+    System.out.println(this.mRevealed.get(this.mRevealed.size()-1).toString());    
+}
     
 public void run() {
 
@@ -117,7 +126,7 @@ public void run() {
 
 
 
-        List<Card> revealed = new ArrayList<Card>();
+        this.mRevealed = new ArrayList<Card>();
 
         little_blind.bet(blind_amount);
         big_blind.bet(2*blind_amount);
@@ -130,18 +139,18 @@ public void run() {
         last_bet = turn(2, last_bet);
 
         m_deck.pop();
-        revealed.add(m_deck.pop());
-        revealed.add(m_deck.pop());
-        revealed.add(m_deck.pop());
+        revealCard();
+        revealCard();
+        revealCard();
 
         last_bet = turn(0, last_bet);
 
         m_deck.pop();
-        revealed.add(m_deck.pop());
+        revealCard();
         last_bet = turn(0, last_bet);
 
         m_deck.pop();
-        revealed.add(m_deck.pop());
+        revealCard();
         last_bet = turn(0,last_bet);
 
         distrubute_gains();
