@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package formation.xp;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,180 +5,211 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Iterator;
+
+
 /**
  *
- * @author bouguechal
+ * Manage the game progress
  */
+
 public class Game {
-  private LinkedList<Card> m_deck;
-  private List<Player> m_players;
-  private int gameSum;
-  private List<Card> mRevealed;
-  
-    public List<Player> getplayers() {
-        return m_players;
+	
+	private LinkedList<Card> mDeck; //cards deck
+	private List<Player> mPlayers; //list of players
+	private int gameSum; //game sum
+	private List<Card> mRevealed; //list of revealed cards
+	private int lastBet; // amount of last bet
+	
+    /**
+	 *
+	 * GETTER mPlayers
+	 */ 
+    public List<Player> getPlayers() {
+    	return this.mPlayers;
     }
-
-  public List<Card> getDeck() {
-        return m_deck;
+    
+    /**
+	 *
+	 * GETTER mDeck
+	 */ 
+    public List<Card> getDeck() {
+        return mDeck;
     }
     
-  public Game(int player_nb){ //Create a game with the number of player
-      m_deck = new LinkedList<Card>();
-      for(Card.Suit suit : Card.Suit.values())
-          for(int value = 1; value<14; value++)
-              m_deck.add(new Card(suit, value));
-      
-      Collections.shuffle(m_deck);
-      
-      m_players = new ArrayList<Player>();
-      for(int i=0; i< player_nb; i++){
-          m_players.add(new Player("Player" + i, 1000));
-      }
-      
-               
-  }
-  
-  public void giveCards(){ //Give two cards to all players
-      for(Player player : m_players){
-          ArrayList<Card> hand = new ArrayList<Card>();
-          hand.add(m_deck.pop());
-          hand.add(m_deck.pop());
-          player.setHand(hand);
-      }
-  }
-  
-//public static int lastBet;
-  
-  private int lastBet;
-
-  public int getLastbet() {
-      return lastBet;
-  }
-
-  public List<Player> getPlayers() {
-      return this.m_players;
-  }
-  
-public void updateLastBet(int amount) {
-	lastBet=amount;	
-}
+	/**
+	 *
+	 * GETTER gameSum
+	 */
+	public int getGameSum(){
+		return this.gameSum;
+	}
+	
+    /**
+	 *
+	 * GETTER lastBet
+	 */ 
+    public int getLastbet() {
+    	return lastBet;
+    }
     
+    /**
+	 *
+	 * Create a game with the number of player
+	 */ 
+    public Game(int player_nb){ 
+    	mDeck = new LinkedList<Card>();
+    	for(Card.Suit suit : Card.Suit.values())
+    		for(int value = 1; value<14; value++)
+    			mDeck.add(new Card(suit, value));
+    	Collections.shuffle(mDeck);
+    	mPlayers = new ArrayList<Player>();
+    	for(int i=0; i< player_nb; i++){
+    		mPlayers.add(new Player("Player" + i, 1000));
+    	}          
+    }
     
-
-private int turn(int index_first_better, int last_bet)
+    /**
+	 *
+	 * Give two cards to each player
+	 */
+    public void giveCards(){ 
+    	for(Player player : mPlayers){
+    		ArrayList<Card> hand = new ArrayList<Card>();
+    		hand.add(mDeck.pop());
+    		hand.add(mDeck.pop());
+    		player.setHand(hand);
+    	}
+    }
+    
+    /**
+	 *
+	 * update the value of lastBet with the new amount
+	 */
+    public void updateLastBet(int amount) {
+    	lastBet=amount;	
+    }
+    
+    /**
+	 *
+	 * Manage a turn
+	 */
+    private int turn(int indexFirstBetter, int lastBet)
     {
-        System.out.println("Taille m_player: "+ m_players.size());
-        System.out.println("index : "+ index_first_better);
-        m_players.get(index_first_better).makeTurn(last_bet);
-        int index_lastbetter = index_first_better;
+        System.out.println("Taille mPlayer: "+ mPlayers.size());
+        System.out.println("index : "+ indexFirstBetter);
+        mPlayers.get(indexFirstBetter).makeTurn(lastBet);
+        int indexLastBetter = indexFirstBetter;
         
-        
-        
-        for(int i = (index_first_better+1)%m_players.size(); i != index_lastbetter; i=(i+1)%m_players.size())
-        {
-            
+        for(int i = (indexFirstBetter+1)%mPlayers.size(); i != indexLastBetter; i=(i+1)%mPlayers.size())
+        {        
             System.out.println("maketurn");
-            m_players.get(i).makeTurn(last_bet);
-             if(m_players.get(i).getPlayerLastBet()>last_bet)
+            mPlayers.get(i).makeTurn(lastBet);
+            if(mPlayers.get(i).getPlayerLastBet()>lastBet)
              {
-                 index_lastbetter=i;
-                 last_bet = m_players.get(i).getPlayerLastBet();
-                 System.out.println("Best bet is: " + last_bet);
+                 indexLastBetter=i;
+                 lastBet = mPlayers.get(i).getPlayerLastBet();
+                 System.out.println("Best bet is: " + lastBet);
              }      
         }
-        return last_bet;
+        return lastBet;
     }
     
-private void distrubute_gains()
-{
-        
-}
-
-private void revealCard(){
-    System.out.print("+++++++++++++++++++++++++++");
-    System.out.print("Revealing Card:\n");
-    this.mRevealed.add(m_deck.pop());
-    System.out.println(this.mRevealed.get(this.mRevealed.size()-1).toString());    
-}
-    
-public void run() {
-
-    int blind_amount = 10;
-    for(int k=0; k<2; k++)
+    /**
+	 *
+	 * Distribute gains
+	 */
+    private void distributeGains()
     {
-        for(Player current : this.m_players){
-            current.resetBet(); //we reset the bet of all the player when the turn begins
-        }
-        m_deck = new LinkedList<Card>();
-        for(Card.Suit suit : Card.Suit.values())
-            for(int value = 1; value<14; value++)
-                 m_deck.add(new Card(suit, value));
-
-        Collections.shuffle(m_deck);
-
-        Player little_blind = m_players.get(0);
-        Player big_blind = m_players.get(1);
-
-
-
-        this.mRevealed = new ArrayList<Card>();
-
-        little_blind.bet(blind_amount);
-        big_blind.bet(2*blind_amount);
-
-        int last_bet=2*blind_amount;
-
-        m_deck.pop();
-        giveCards();
-
-        last_bet = turn(2, last_bet);
-
-        m_deck.pop();
-        revealCard();
-        revealCard();
-        revealCard();
-
-        last_bet = turn(0, last_bet);
-
-        m_deck.pop();
-        revealCard();
-        last_bet = turn(0, last_bet);
-
-        m_deck.pop();
-        revealCard();
-        last_bet = turn(0,last_bet);
-
-        distrubute_gains();
-
+        
     }
 
-
-}
+    /**
+	 *
+	 * Reveal a card
+	 */
+    private void revealCard(){
+    	System.out.print("+++++++++++++++++++++++++++");
+    	System.out.print("Revealing Card:\n");
+    	this.mRevealed.add(mDeck.pop());
+    	System.out.println(this.mRevealed.get(this.mRevealed.size()-1).toString());    
+    }
+    
+    /**
+	 *
+	 * Run the game (main program)
+	 */
+    public void run() {
+    	int blindAmount = 10;
+    	for(int k=0; k<2; k++)
+    	{
+    		for(Player current : this.mPlayers){
+    			current.resetBet(); //we reset the bet of all the player when the turn begins
+    		}
+    		mDeck = new LinkedList<Card>();
+	        for(Card.Suit suit : Card.Suit.values())
+	            for(int value = 1; value<14; value++)
+	                 mDeck.add(new Card(suit, value));
+	
+	        Collections.shuffle(mDeck);	
+	        Player littleBlind = mPlayers.get(0);
+	        Player bigBlind = mPlayers.get(1);
+	
+	        this.mRevealed = new ArrayList<Card>();
+	
+	        littleBlind.bet(blindAmount);
+	        bigBlind.bet(2*blindAmount);
+	
+	        int lastBet=2*blindAmount;
+	
+	        mDeck.pop();
+	        giveCards();
+	
+	        lastBet = turn(2, lastBet);
+	
+	        mDeck.pop();
+	        revealCard();
+	        revealCard();
+	        revealCard();
+	
+	        lastBet = turn(0, lastBet);
+	
+	        mDeck.pop();
+	        revealCard();
+	        lastBet = turn(0, lastBet);
+	
+	        mDeck.pop();
+	        revealCard();
+	        lastBet = turn(0,lastBet);
+	
+	        distributeGains();	
+	    }
+    }
   
-
-public void kickPlayer(){
-	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
-		 if (((Player) it.next()).getRemainingStake()==0){
-			 m_players.remove(it.next());
-		 }	 
+    /**
+	 *
+	 * Kick a player if has no more stake
+	 */
+	public void kickPlayer(){
+		for (Iterator<Player> it = mPlayers.iterator(); it.hasNext();){
+			if (((Player) it.next()).getRemainingStake()==0){
+				mPlayers.remove(it.next());
+			}	 
+		}
 	}
-}
 
-
-public int seeGameSum(){
-	gameSum=0;
-	for (Iterator<Player> it = m_players.iterator(); it.hasNext();){
-		 gameSum += ((Player) it.next()).getPlayerLastBet();
-		// System.out.println(((Player) it.next()).getPlayerLastBet());
+	/**
+	 *
+	 * See the game sum
+	 */
+	public int seeGameSum(){
+		gameSum=0;
+		for (Iterator<Player> it = mPlayers.iterator(); it.hasNext();){
+			gameSum += ((Player) it.next()).getPlayerLastBet();
+		}
+		System.out.println(gameSum);
+		return this.gameSum;
 	}
-	System.out.println(gameSum);
-	return this.gameSum;
-}
 
-public int getGameSum(){
-	return this.gameSum;
-}
 }
     
 

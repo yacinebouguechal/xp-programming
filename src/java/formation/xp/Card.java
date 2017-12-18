@@ -6,32 +6,49 @@ package formation.xp;
 
 /**
  *
- * @author bouguechal
+ * Card class
  */
+
 public class Card {
+	
+	static public enum Suit {CLUBS,HEARTS, DIAMONDS, SPADES };
+    private int mValue;
+    private Suit mSuit;
+    
+    /**
+	 *
+	 * Constructor 
+	 */
     public Card(Suit suit, int value){
-        assert(value<14);
+    	assert(value<14);
         assert(0<value);
-        m_suit = suit;
-        m_value = value;
+        mSuit = suit;
+        mValue = value;
     }
-    
-    static public enum Suit {CLUBS,HEARTS, DIAMONDS, SPADES };
-    private int m_value;
-
+       
+    /**
+	 *
+	 * Constructor with name only
+	 */
     public Suit getSuit() {
-        return m_suit;
+    	return mSuit;
     }
 
+    /**
+	 *
+	 * Constructor with name only
+	 */
     public int getValue() {
-        return m_value;
+        return mValue;
     }
     
-    private Suit m_suit;
-    
+    /**
+	 *
+	 * toString (card)
+	 */
     public String toString(){
-        String result;
-        switch(m_value)
+    	String result;
+        switch(mValue)
         {
             case 13:
                 result = "King";
@@ -46,11 +63,11 @@ public class Card {
                 result = "Ace";
                 break;
             default:
-                result = String.valueOf(m_value);
+                result = String.valueOf(mValue);
         }
         result += " of ";
         
-        switch(m_suit)
+        switch(mSuit)
         {
             case SPADES:
                 result += "Spades";
